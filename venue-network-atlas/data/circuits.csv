@@ -1,0 +1,81 @@
+venue_id,venue,role,carrier,circuitId,bandwidth,ipBlock,gateway,account,support,status,notes
+600-5th-ave-corporate-east-hq,600 5th Ave. Corporate East HQ,Primary,AT&T / Zayo,2122692319627,300 Mbps,71.190.247.243/24,,,800-922-0204,,
+600-5th-ave-corporate-east-hq,600 5th Ave. Corporate East HQ,Backup,AT&T,,,,,,,,Backup Cellular IP TBD
+61-broadway-corporate-east-hq,61 Broadway Corporate East HQ,Primary,Verizon,2122692319627,,,,,,,
+amc-365-data-center,AMC/365 Data Center,Primary,Atlantic Metro Communications,15721,100 Mbps,204.145.64.212,,Stephen Klenert · 212.792.9950 x 113,support@atlanticmetro.net,,
+amc-365-data-center,AMC/365 Data Center,Secondary,Spectrum,20.L1XX.902711..CHTR,,,,,,,
+angel-stadium,Angel Stadium,Primary,Spectrum,71.L1XX.911163..CHTR,200 Mbps,76.81.211.242/29,76.81.211.241,,,,
+angel-stadium,Angel Stadium,Secondary,Spectrum,8448 40 021 3094704,50 Mbps,64.60.73.199/27,64.60.73.193,,,,
+at-t-discovery-district,AT&T Discovery District,Primary,AT&T,,,99.124.168.82/29,99.124.168.86,,,,Circuit ID column says 'AT&T'
+at-t-stadium,AT&T Stadium,Primary,Dallas Cowboys Managed,,,12.238.34.50/23,12.238.34.1,,,,Client-provided circuit; Circuit ID column says 'AT&T'
+ball-arena,Ball Arena,Primary,Provided by Client,,,50.224.19.165/29,50.224.19.161,,,,Client-provided circuit
+ball-arena,Ball Arena,Secondary,,,,65.154.240.107/29,65.154.240.105,,,,
+bethel-woods,Bethel Woods,Primary,Provided by Client,,,208.220.136.155/29,208.220.136.153,,,,Client-provided circuit
+bethel-woods,Bethel Woods,Secondary,,,,72.43.130.92/29,72.43.130.89,,,,
+buffalo-bills,Buffalo Bills,Primary,Provided by Client,,,151.181.86.196/26,151.181.86.193,,,,Client-provided circuit
+buffalo-bills,Buffalo Bills,Secondary,,,,184.74.47.146/26,184.74.47.129,,,,
+central-park-boathouse,Central Park Boathouse,Primary,NuVision Microwave,Microwave Inet,100Mbs,64.78.247.248/26,64.78.247.193,,,,
+circle-line-cruises,Circle Line Cruises,Primary,Provided by Client,,,,,,,,Client-provided circuit
+conshohocken,Conshohocken,Primary,Comcast,11.KFGS.322572.PA,1G,50.232.14.58/29,50.232.14.57,,,,
+conshohocken,Conshohocken,Secondary,Verizon,,,208.253.226.50/29,208.253.226.49,,,,
+csl-minneapolis,CSL-Minneapolis,Primary,Comcast,8772106007958850,,71.24.234.129/29,71.24.234.134,,,,Long account number may have been rounded by Excel — verify last digits
+culver-city-corporate-west-hq,Culver City Corporate West HQ,Primary,AT&T,,50MB,,,,,,No Legends FW onsite
+daytona,Daytona,Primary,Provided by Client,,,12.132.182.165/27,12.132.182.161,,,,Client-provided circuit
+dicks-sporting-goods-park,Dicks Sporting Goods Park,Primary,MSL Colorado Rapids,,,,,,,,Client-provided circuit; Circuit ID column says 'Provided by Client'
+florida-state-university,Florida State University,Primary,Provided by Client,0050580245-01,,,,,,,Client-provided circuit
+george-steinbrenner-field,George Steinbrenner Field,Primary,Spectrum,,,,,Acct number: 630581-01 · Account Number: 8101-0414058-01,,,
+georgetown-university,Georgetown University,Primary,Astound,,,216.15.33.79/27,216.15.33.65,,,,
+gts-chicago,GTS Chicago,Primary,AT&T,,,173.165.45.49/30,173.165.45.50,,,,
+gts-chicago,GTS Chicago,Primary,Comcast,8773103231784530,,,,,,,Long account number may have been rounded by Excel — verify last digits
+indiana-university-assembly-hall,Indiana University Assembly Hall,Primary,Provided by Client,,,,,,,,Client-provided circuit
+indiana-university-carmichael-center,Indiana University Carmichael Center,Primary,AT&T,,,50.195.164.181/29,,,,,
+indianapolis-motor-speedway,Indianapolis Motor Speedway,Primary,Comcast Business,,,,,,,,
+indianapolis-motor-speedway,Indianapolis Motor Speedway,Primary,Comcast Business,,,,,,,,
+legends-global-merchandise,Legends Global Merchandise,Primary,Everstream 1G Uplink to Indy 4 DC,,,,,,,,Internet routed via Indy4
+lgm-buffalo,LGM Buffalo,Primary,Comcast/Spectrum,,1G,50.75.182.250/29,50.75.182.249,,,,
+lgm-buffalo,LGM Buffalo,Secondary,Verizon,,1G,208.252.74.66/29,208.252.74.65,,,,
+lgm-indy4,LGM INDY4,Primary,Everstream,71.L1XX.000130.717.TWCC,100 Mbps,209.43.72.196/26,209.43.72.193,Account Number: 144290101,,,
+lgm-indy4,LGM INDY4,Secondary,,,,209.43.103.196/26,209.43.103.193,,,,
+lobels,Lobels,Primary,Crown Castle,,,144.121.65.90/29,144.121.65.89,,,,
+lobels,Lobels,Secondary,Verizon,,,172.254.90.74/29,172.254.90.73,,,,
+mlb-flagship-store,MLB Flagship Store,Primary,Crown Castle,2020-56123,50 Mbps,192.0.2.2/24,192.0.2.1,Philip LaFlower Philip.LaFlower@crowncastle.com · T: (212) 631-8986 | M: (631) 617-7808,,,192.0.2.x is a documentation placeholder — real address needed
+nebraska-university,Nebraska University,Primary,Allo Fiber,31.KRGS.008961..CBCL..,100 Mbps,209.50.7.146/29,209.50.7.145,Acct#L 939106681,,,
+nebraska-university,Nebraska University,Secondary,,,,192.0.2.2/24,192.0.2.1,,,,192.0.2.x is a documentation placeholder — real address needed
+nissan-stadium,Nissan Stadium,Primary,Comcast,,,50.236.79.34/29,50.236.79.33,,,,
+nissan-stadium,Nissan Stadium,Secondary,,,,50.206.251.9/28,50.206.251.1,,,,
+nissan-stadium,Nissan Stadium,Primary,Comcast,31.KRGS.008961..CBCL..,,,,,,,
+norwalk-office,Norwalk Office,Primary,,,,192.168.0.2/24,192.168.0.1,,,,
+norwalk-office,Norwalk Office,Primary,Comcast,,,50.232.14.58/29,,,,,Carrier marked uncertain in source
+ohio-state-football-stadium,Ohio State Football Stadium,Primary,AT&T,,,128.146.162.66/27,128.146.162.65,,,,
+ohio-state-merch-store,Ohio State Merch Store,Primary,,,,,,,,,AT&T TBD
+ohio-state-schott-arena,Ohio State Schott Arena,Primary,,,,128.146.162.2/27,128.146.162.1,,,,
+oklahoma-city-thunder,Oklahoma City Thunder,Primary,,,,66.210.180.181/24,66.210.180.1,,,,
+one-world-observatory,One World Observatory,Primary,Zayo,32102-IP-NYCMNY1T,1Gb DIA,104.247.33.66/30,104.247.33.65,Acct# A22528 S466731,,,
+one-world-observatory,One World Observatory,Secondary,Verizon,,,68.161.206.227/24,68.161.206.1,,,,Carrier marked uncertain in source
+paramount-theatre,Paramount Theatre,Primary,Provided by Client,,,,,,,,Client-provided circuit
+pechanga-arena,Pechanga Arena,Primary,Provided by Client,Account ID 8993114450045407,50 Mbps,209.242.130.195/29,209.242.130.193,,,,Client-provided circuit
+pechanga-arena,Pechanga Arena,Secondary,,,,12.12.92.200/27,,,,,Gateway unknown
+roca-restaurant,Roca Restaurant,Primary,,BREC.990837..ATI,150 Mbps,,,402-480-6570 -> restore account services,855.632.3154,,
+scranton-railriders,Scranton Railriders,Primary,Comcast,,,23.31.248.209,23.31.248.210,,,,
+scranton-railriders,Scranton Railriders,Primary,Comcast,8993114450045400,,,,,,,Long account number may have been rounded by Excel — verify last digits
+sky-view-observatory,Sky View Observatory,Primary,Provided by 3rd Party MSP Cogent,,,,,,,,Client-provided circuit
+stanton-island-ferryhawks,Stanton Island Ferryhawks,Primary,Provided by Client,,,108.29.165.27/24,108.29.165.1,,,,Client-provided circuit
+stanton-island-ferryhawks,Stanton Island Ferryhawks,Secondary,,,,69.38.135.147/29,69.38.135.145,,,,
+tampa-bay-buccaneers,Tampa Bay Buccaneers,Primary,Spectrum,ACCT-168980201,200 MBPS,97.71.130.210/29,97.71.130.209,Site ID 51413643,,,
+tampa-bay-buccaneers,Tampa Bay Buccaneers,Secondary,,,,8.21.131.100/24,8.21.131.251,,,,
+the-rock,The Rock,Primary,AT&T,,,12.248.183.26/30,12.248.183.25,,,,
+the-star-corporate-hq,The Star Corporate HQ,Primary,AT&T,81.L1XX.908206..TWCC,1G,12.246.242.70/30,12.246.242.69,,,,
+the-star-corporate-hq,The Star Corporate HQ,Secondary,AT&T,IZEC.571554..ATI,1G,12.77.74.190/30,12.77.74.189,,,,Backup circuit for The Star / Cowboys Club network
+toronto-blue-jays,Toronto Blue Jays,Primary,,,,10.0.128.1/24,4.31.214.145,,,,
+toronto-blue-jays,Toronto Blue Jays,Secondary,,,,24.114.5.75/27,24.114.5.65,,,,
+university-of-maryland,University of Maryland,Primary,Comcast,,,50.144.191.82/30,50.144.191.81,,,,
+university-of-maryland,University of Maryland,Primary,Comcast,,,,,,,,
+university-of-michigan,University of Michigan,Primary,Provided by Client,101574-IP-NYMNNYP8,50 Mbps,,,101574-IP-NYMNNYP8,,,Client-provided circuit
+university-of-michigan-downtown,University of Michigan Downtown,Primary,,,,,,,,,Circuit ID column says 'AT&T'
+university-of-michigan-westgate,University of Michigan Westgate,Primary,,,,,,,,,Circuit ID column says 'AT&T'
+uss-intrepid-sea-air-space-museum,"USS Intrepid Sea, Air & Space Museum",Primary,Crown Castle,8773103231784530,1 Gbps,172.85.54.134/30,172.85.54.133,1-855-933-4237,,,Long account number may have been rounded by Excel — verify last digits
+view-boston,View Boston,Primary,,,,131.239.126.106/30,131.239.126.105,,,,
+view-boston,View Boston,Secondary,,,,50.187.70.33/30,50.187.70.34,,,,
+view-boston,View Boston,Primary,Comcast,8773103231784530,,,,,,,Long account number may have been rounded by Excel — verify last digits
+view-boston-office,View Boston Office,Primary,Comcast,,,71.26.244.101/30,71.26.244.102,,,,
+yankee-stadium,Yankee Stadium,Primary,Provided by Client,,,,,,,,Client-provided circuit

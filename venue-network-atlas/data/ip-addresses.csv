@@ -1,0 +1,54 @@
+venue_id,venue,vlan,name,subnet,gateway,dhcp,notes
+600-5th-ave-corporate-east-hq,600 5th Ave. Corporate East HQ,,WAN – primary (AT&T / Zayo),71.190.247.243/24,,,Public IP from circuit records
+amc-365-data-center,AMC/365 Data Center,,WAN – primary (Atlantic Metro Communications),204.145.64.212,,,Public IP from circuit records
+angel-stadium,Angel Stadium,,WAN – primary (Spectrum),76.81.211.242/29,76.81.211.241,,Public IP from circuit records
+angel-stadium,Angel Stadium,,WAN – secondary (Spectrum),64.60.73.199/27,64.60.73.193,,Public IP from circuit records
+at-t-discovery-district,AT&T Discovery District,,WAN – primary (AT&T),99.124.168.82/29,99.124.168.86,,Public IP from circuit records
+at-t-stadium,AT&T Stadium,,WAN – primary (Dallas Cowboys Managed),12.238.34.50/23,12.238.34.1,,Public IP from circuit records
+ball-arena,Ball Arena,,WAN – primary (Provided by Client),50.224.19.165/29,50.224.19.161,,Public IP from circuit records
+ball-arena,Ball Arena,,WAN – secondary,65.154.240.107/29,65.154.240.105,,Public IP from circuit records
+bethel-woods,Bethel Woods,,WAN – primary (Provided by Client),208.220.136.155/29,208.220.136.153,,Public IP from circuit records
+bethel-woods,Bethel Woods,,WAN – secondary,72.43.130.92/29,72.43.130.89,,Public IP from circuit records
+buffalo-bills,Buffalo Bills,,WAN – primary (Provided by Client),151.181.86.196/26,151.181.86.193,,Public IP from circuit records
+buffalo-bills,Buffalo Bills,,WAN – secondary,184.74.47.146/26,184.74.47.129,,Public IP from circuit records
+central-park-boathouse,Central Park Boathouse,,WAN – primary (NuVision Microwave),64.78.247.248/26,64.78.247.193,,Public IP from circuit records
+conshohocken,Conshohocken,,WAN – primary (Comcast),50.232.14.58/29,50.232.14.57,,Public IP from circuit records
+conshohocken,Conshohocken,,WAN – secondary (Verizon),208.253.226.50/29,208.253.226.49,,Public IP from circuit records
+csl-minneapolis,CSL-Minneapolis,,WAN – primary (Comcast),71.24.234.129/29,71.24.234.134,,Public IP from circuit records
+daytona,Daytona,,WAN – primary (Provided by Client),12.132.182.165/27,12.132.182.161,,Public IP from circuit records
+georgetown-university,Georgetown University,,WAN – primary (Astound),216.15.33.79/27,216.15.33.65,,Public IP from circuit records
+gts-chicago,GTS Chicago,,WAN – primary (AT&T),173.165.45.49/30,173.165.45.50,,Public IP from circuit records
+indiana-university-carmichael-center,Indiana University Carmichael Center,,WAN – primary (AT&T),50.195.164.181/29,,,Public IP from circuit records
+lgm-buffalo,LGM Buffalo,,WAN – primary (Comcast/Spectrum),50.75.182.250/29,50.75.182.249,,Public IP from circuit records
+lgm-buffalo,LGM Buffalo,,WAN – secondary,208.252.74.66/29,208.252.74.65,,Public IP from circuit records
+lgm-indy4,LGM INDY4,,WAN – primary (Everstream),209.43.72.196/26,209.43.72.193,,Public IP from circuit records
+lgm-indy4,LGM INDY4,,WAN – secondary,209.43.103.196/26,209.43.103.193,,Public IP from circuit records
+lobels,Lobels,,WAN – primary (Crown Castle),144.121.65.90/29,144.121.65.89,,Public IP from circuit records
+lobels,Lobels,,WAN – secondary (Verizon),172.254.90.74/29,172.254.90.73,,Public IP from circuit records
+nebraska-university,Nebraska University,,WAN – primary (Allo Fiber),209.50.7.146/29,209.50.7.145,,Public IP from circuit records
+nissan-stadium,Nissan Stadium,,WAN – primary (Comcast),50.236.79.34/29,50.236.79.33,,Public IP from circuit records
+nissan-stadium,Nissan Stadium,,WAN – secondary,50.206.251.9/28,50.206.251.1,,Public IP from circuit records
+norwalk-office,Norwalk Office,,WAN – primary,192.168.0.2/24,192.168.0.1,,Public IP from circuit records
+norwalk-office,Norwalk Office,,WAN – primary (Comcast),50.232.14.58/29,,,Public IP from circuit records
+ohio-state-football-stadium,Ohio State Football Stadium,,WAN – primary (AT&T),128.146.162.66/27,128.146.162.65,,Public IP from circuit records
+ohio-state-schott-arena,Ohio State Schott Arena,,WAN – primary,128.146.162.2/27,128.146.162.1,,Public IP from circuit records
+oklahoma-city-thunder,Oklahoma City Thunder,,WAN – primary,66.210.180.181/24,66.210.180.1,,Public IP from circuit records
+one-world-observatory,One World Observatory,,WAN – primary (Zayo),104.247.33.66/30,104.247.33.65,,Public IP from circuit records
+one-world-observatory,One World Observatory,,WAN – secondary (Verizon),68.161.206.227/24,68.161.206.1,,Public IP from circuit records
+pechanga-arena,Pechanga Arena,,WAN – primary (Provided by Client),209.242.130.195/29,209.242.130.193,,Public IP from circuit records
+pechanga-arena,Pechanga Arena,,WAN – secondary,12.12.92.200/27,,,Public IP from circuit records
+scranton-railriders,Scranton Railriders,,WAN – primary (Comcast),23.31.248.209,23.31.248.210,,Public IP from circuit records
+stanton-island-ferryhawks,Stanton Island Ferryhawks,,WAN – primary (Provided by Client),108.29.165.27/24,108.29.165.1,,Public IP from circuit records
+stanton-island-ferryhawks,Stanton Island Ferryhawks,,WAN – secondary,69.38.135.147/29,69.38.135.145,,Public IP from circuit records
+tampa-bay-buccaneers,Tampa Bay Buccaneers,,WAN – primary (Spectrum),97.71.130.210/29,97.71.130.209,,Public IP from circuit records
+tampa-bay-buccaneers,Tampa Bay Buccaneers,,WAN – secondary,8.21.131.100/24,8.21.131.251,,Public IP from circuit records
+the-rock,The Rock,,WAN – primary (AT&T),12.248.183.26/30,12.248.183.25,,Public IP from circuit records
+the-star-corporate-hq,The Star Corporate HQ,,WAN – primary (AT&T),12.246.242.70/30,12.246.242.69,,Public IP from circuit records
+the-star-corporate-hq,The Star Corporate HQ,,WAN – secondary (AT&T),12.77.74.190/30,12.77.74.189,,Public IP from circuit records
+toronto-blue-jays,Toronto Blue Jays,,WAN – primary,10.0.128.1/24,4.31.214.145,,Public IP from circuit records
+toronto-blue-jays,Toronto Blue Jays,,WAN – secondary,24.114.5.75/27,24.114.5.65,,Public IP from circuit records
+university-of-maryland,University of Maryland,,WAN – primary (Comcast),50.144.191.82/30,50.144.191.81,,Public IP from circuit records
+uss-intrepid-sea-air-space-museum,"USS Intrepid Sea, Air & Space Museum",,WAN – primary (Crown Castle),172.85.54.134/30,172.85.54.133,,Public IP from circuit records
+view-boston,View Boston,,WAN – primary,131.239.126.106/30,131.239.126.105,,Public IP from circuit records
+view-boston,View Boston,,WAN – secondary,50.187.70.33/30,50.187.70.34,,Public IP from circuit records
+view-boston-office,View Boston Office,,WAN – primary (Comcast),71.26.244.101/30,71.26.244.102,,Public IP from circuit records

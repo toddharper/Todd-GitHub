@@ -1,0 +1,437 @@
+<title>Venue Network Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: operations console — venue index rail on the left, one venue's record on the right with header + tabbed panels */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#e8ecf0; --line:#d3dae1; --fg:#17212b; --muted:#5b6876;
+  --accent:#1f5f8b; --accent-ink:#ffffff; --accent-soft:#dbe8f2;
+  --ok:#1d7a4f; --ok-bg:#dcf1e6; --warn:#9a6200; --warn-bg:#fbefd6; --bad:#b3261e; --bad-bg:#f9dedb; --idle:#5b6876; --idle-bg:#e6eaee;
+  --f-display:"Barlow Semi Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161c; --surface:#172029; --sunk:#0c1116; --line:#2a3642; --fg:#e4eaf0; --muted:#93a1ae;
+  --accent:#6fb0dc; --accent-ink:#0b1620; --accent-soft:#1c3346;
+  --ok:#6fd3a0; --ok-bg:#163527; --warn:#f0be62; --warn-bg:#3a2d12; --bad:#f2958d; --bad-bg:#3e1c1a; --idle:#93a1ae; --idle-bg:#222d37;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161c; --surface:#172029; --sunk:#0c1116; --line:#2a3642; --fg:#e4eaf0; --muted:#93a1ae;
+  --accent:#6fb0dc; --accent-ink:#0b1620; --accent-soft:#1c3346;
+  --ok:#6fd3a0; --ok-bg:#163527; --warn:#f0be62; --warn-bg:#3a2d12; --bad:#f2958d; --bad-bg:#3e1c1a; --idle:#93a1ae; --idle-bg:#222d37;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.app{display:grid;grid-template-columns:290px minmax(0,1fr);gap:20px;max-width:1400px;margin:0 auto;
+  padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media (max-width:820px){.app{grid-template-columns:minmax(0,1fr)}}
+
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:.01em}
+.mono{font-family:var(--f-mono);font-size:.86em;font-variant-numeric:tabular-nums}
+.label{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);font-weight:600}
+button{font:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,.venue-item:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* rail */
+.rail{display:flex;flex-direction:column;gap:12px;min-width:0}
+.brand{display:flex;flex-direction:column;gap:2px}
+.brand h1{font-size:22px;font-weight:700}
+.brand .sub{color:var(--muted);font-size:13px}
+.search{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);font:inherit}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:6px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-weight:600;font-size:14px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.danger.armed{background:var(--bad);color:var(--surface)}
+.btn.ghost{border-color:transparent;background:transparent;color:var(--muted);padding:4px 8px}
+.btn.ghost:hover{color:var(--fg)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.venue-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;background:var(--surface);overflow:auto;max-height:calc(100vh - 220px)}
+@media (max-width:820px){.venue-list{max-height:260px}}
+.venue-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 8px;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer;text-align:left;background:none;border-left:3px solid transparent;width:100%;color:inherit}
+.venue-list li:last-child .venue-item{border-bottom:0}
+.venue-item:hover{background:var(--sunk)}
+.venue-item.on{background:var(--accent-soft);border-left-color:var(--accent)}
+.venue-item .n{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.venue-item .c{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.venue-item .a{grid-column:1/-1;font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.count{font-size:13px;color:var(--muted)}
+.groups{display:flex;flex-wrap:wrap;gap:6px}
+.gchip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--muted);font-size:13px;font-weight:600}
+.gchip span{font-family:var(--f-mono);font-size:11px;font-weight:500}
+.gchip:hover{color:var(--fg)}
+.gchip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.gchip.rev:not(.on){color:var(--warn);border-color:var(--warn)}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:7px;vertical-align:middle}
+.venue-item.obs .n,.venue-item.obs .a{opacity:.6}
+.venue-item.obs .c{font-family:var(--f-body);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.desc{color:var(--muted);margin-top:4px}
+.status-chip{font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;padding:2px 8px;border-radius:4px;color:var(--idle);background:var(--idle-bg)}
+.notes-box{margin:0 22px 0;padding:12px 14px;border-radius:8px;background:var(--sunk);font-size:14px;white-space:pre-wrap;display:flex;flex-direction:column;gap:6px}
+.notes-box.review{background:var(--warn-bg)}
+.notes-box .label{color:var(--fg)}
+.notes-wrap{padding:0 0 16px}
+.field select{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);font:inherit;width:100%}
+
+/* main */
+.main{min-width:0;display:flex;flex-direction:column;gap:16px}
+.record{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.rec-head{padding:20px 22px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:20px;border-bottom:1px solid var(--line)}
+@media (max-width:980px){.rec-head{grid-template-columns:minmax(0,1fr)}}
+.title-row{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.title-row h2{font-size:30px;font-weight:700;line-height:1.1}
+.code-tag{font-family:var(--f-mono);font-size:13px;padding:2px 8px;border-radius:4px;background:var(--sunk);color:var(--muted)}
+.addr{margin-top:8px;color:var(--fg)}
+.addr .muted{color:var(--muted)}
+.meta{margin-top:10px;font-size:13px;color:var(--muted)}
+.contact{background:var(--sunk);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.contact .who{font-weight:600;font-size:16px}
+.contact .role{color:var(--muted);font-size:13px;margin-top:-6px}
+.kv{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:8px}
+.kv .v{overflow-wrap:anywhere;user-select:all}
+.copy{font-size:12px;padding:2px 8px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.copy:hover{color:var(--fg)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;align-items:center;padding:12px 22px;border-bottom:1px solid var(--line);background:var(--surface)}
+.actions .spacer{flex:1}
+.ro-note{font-size:13px;color:var(--muted)}
+
+.tabs{display:flex;gap:2px;padding:0 14px;border-bottom:1px solid var(--line);overflow-x:auto;background:var(--surface)}
+.tab{padding:12px 14px;border:0;background:none;color:var(--muted);font-family:var(--f-display);font-size:16px;font-weight:600;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.tab:hover{color:var(--fg)}
+.tab.on{color:var(--fg);border-bottom-color:var(--accent)}
+.tab .badge{font-family:var(--f-mono);font-size:11px;background:var(--sunk);color:var(--muted);padding:1px 6px;border-radius:10px}
+.panel{padding:18px 22px 22px}
+.panel-intro{color:var(--muted);font-size:14px;margin:0 0 12px;max-width:70ch}
+
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--sunk);padding:9px 12px;white-space:nowrap}
+td{padding:9px 12px;border-top:1px solid var(--line);vertical-align:top}
+td.mono,td .mono{white-space:nowrap}
+tbody tr:hover td{background:color-mix(in srgb,var(--sunk) 50%,transparent)}
+td input,td select{width:100%;min-width:90px;padding:5px 7px;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--fg);font:inherit;font-size:13px}
+td input.mono{font-family:var(--f-mono);font-size:12.5px}
+td.rm{width:1%;white-space:nowrap}
+.empty-row td{color:var(--muted);text-align:center;padding:22px}
+.add-row{margin-top:10px}
+
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.chip.Active{color:var(--ok);background:var(--ok-bg)}
+.chip.Pending{color:var(--warn);background:var(--warn-bg)}
+.chip.Down{color:var(--bad);background:var(--bad-bg)}
+.chip.Decommissioned{color:var(--idle);background:var(--idle-bg)}
+.hosts{color:var(--muted);font-family:var(--f-mono);font-size:12px}
+
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+@media (max-width:560px){.form-grid{grid-template-columns:minmax(0,1fr)}}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field.wide{grid-column:1/-1}
+.field input,.field textarea{padding:7px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--fg);font:inherit;width:100%}
+.field textarea{min-height:80px;resize:vertical}
+.form-section{display:flex;flex-direction:column;gap:10px}
+
+.diagram{display:flex;flex-direction:column;gap:14px}
+.diagram-frame{border:1px solid var(--line);border-radius:8px;background:var(--sunk);padding:12px;display:flex;justify-content:center;overflow:auto}
+.diagram-frame img{max-width:100%;height:auto;background:#fff;border-radius:4px}
+.diagram-empty{border:1.5px dashed var(--line);border-radius:8px;padding:36px 20px;text-align:center;color:var(--muted)}
+.diagram-notes{white-space:pre-wrap;max-width:75ch}
+
+.blank{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:48px 28px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.blank h2{font-size:26px}
+.blank p{margin:0;color:var(--muted);max-width:60ch}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:9px 16px;border-radius:6px;font-size:14px;z-index:20}
+@media (prefers-reduced-motion:no-preference){.venue-item,.tab,.btn{transition:background .12s,border-color .12s,color .12s}}
+</style>
+
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <h1>Venue Network Atlas</h1>
+      <div class="sub">Sites, circuits, addressing and diagrams</div>
+    </div>
+    <input id="q" class="search" type="search" placeholder="Search name, contact, circuit ID, IP…" aria-label="Search venues">
+    <div class="groups" id="groups" role="group" aria-label="Filter venues"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+      <span class="count" id="count">Loading venues…</span>
+      <button class="btn primary" id="addVenue" hidden>+ Add venue</button>
+    </div>
+    <ul class="venue-list" id="list" aria-label="Venues"></ul>
+  </aside>
+  <main class="main" id="main">
+    <div class="blank">
+      <h2>Loading venue records</h2>
+      <p>Venue details, network equipment, circuits, IP addressing and site diagrams will appear here.</p>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  const TABS = [
+    {id:"equipment", label:"Network Equipment"},
+    {id:"circuits", label:"Circuits"},
+    {id:"ip", label:"IP Addressing"},
+    {id:"diagram", label:"Site Diagram"},
+  ];
+  const COLS = {
+    equipment:[
+      {f:"hostname",l:"Hostname",mono:1},{f:"role",l:"Role",opts:["Firewall","Core switch","Access switch","Router","Wireless controller","Access point","Server","UPS","Other"]},
+      {f:"model",l:"Make / Model"},{f:"serial",l:"Serial",mono:1},{f:"mgmtIp",l:"Mgmt IP",mono:1},{f:"location",l:"Location / Rack"},{f:"notes",l:"Notes"}],
+    circuits:[
+      {f:"role",l:"Role",opts:["Primary","Secondary","Backup"]},{f:"carrier",l:"Carrier"},{f:"circuitId",l:"Circuit / Account ID",mono:1},
+      {f:"bandwidth",l:"Bandwidth"},{f:"ipBlock",l:"WAN IP / Block",mono:1,hosts:1},{f:"gateway",l:"Gateway",mono:1},{f:"account",l:"Account / Rep"},
+      {f:"support",l:"Support"},{f:"status",l:"Status",opts:["Active","Pending","Down","Decommissioned"],chip:1},{f:"notes",l:"Notes"}],
+    ip:[
+      {f:"vlan",l:"VLAN",mono:1},{f:"name",l:"Name"},{f:"subnet",l:"Subnet / Address",mono:1,hosts:1},{f:"gateway",l:"Gateway",mono:1},{f:"dhcp",l:"DHCP range",mono:1},{f:"notes",l:"Notes"}],
+  };
+  const INTRO = {
+    equipment:"Every managed device at the site, with its management address and physical location.",
+    circuits:"Carrier circuits terminating at the site. Keep the circuit ID and support number handy for trouble tickets.",
+    ip:"VLANs and subnets in use at the site. Usable host counts are calculated from the CIDR prefix.",
+  };
+
+  const S = { db:null, user:null, assets:null, canWrite:false, venues:[], byId:new Map(), sel:null, tab:"equipment",
+    editing:false, draft:null, isNew:false, q:"", group:"All", ready:false, delArmed:false, names:{} };
+  try { const t = localStorage.getItem("vna.tab"); if (TABS.some(x=>x.id===t)) S.tab = t; } catch(e){}
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const clone = o => JSON.parse(JSON.stringify(o));
+  const GROUPS = ["Legends","Live Nation","Real Madrid"];
+  const blankVenue = () => ({name:"",code:"",group:"Legends",status:"Active",description:"",client:"",address:"",city:"",state:"",zip:"",country:"",
+    contact:{name:"",title:"",phone:"",email:"",employer:""},venueTech:"",notes:"",parent:"",equipment:[],circuits:[],ip:[],diagram:{assetId:"",url:"",kind:"",notes:""}});
+  const norm = v => { const b = blankVenue(); return {...b, ...v, contact:{...b.contact,...(v.contact||{})}, diagram:{...b.diagram,...(v.diagram||{})},
+    equipment:Array.isArray(v.equipment)?v.equipment:[], circuits:Array.isArray(v.circuits)?v.circuits:[], ip:Array.isArray(v.ip)?v.ip:[]}; };
+
+  function toast(msg){ const t=$("toast"); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2400); }
+
+  function hostsFor(cidr){
+    const m = String(cidr||"").trim().match(/^(\d{1,3}\.){3}\d{1,3}\/(\d{1,2})$/); if(!m) return "";
+    const p = +m[2]; if (p>32) return ""; if (p===32) return "1 host"; if (p===31) return "2 hosts (p2p)";
+    return (2**(32-p)-2).toLocaleString()+" usable";
+  }
+
+  // ---------- rendering ----------
+  const needsReview = v => /Import review/.test(v.notes||"");
+  function filtered(){
+    const q = S.q.trim().toLowerCase();
+    let l = S.venues.filter(v => S.group==="All" || (S.group==="Review" ? needsReview(v) : v.group===S.group));
+    if (q) l = l.filter(v => JSON.stringify([v.name,v.code,v.description,v.client,v.address,v.city,v.state,v.zip,v.contact,v.venueTech,v.notes,v.equipment,v.circuits,v.ip]).toLowerCase().includes(q));
+    return l.slice().sort((a,b)=>(a.status==="Obsolete")-(b.status==="Obsolete") || a.name.localeCompare(b.name));
+  }
+  function renderFilters(){
+    const n = g => g==="All"?S.venues.length : g==="Review"?S.venues.filter(needsReview).length : S.venues.filter(v=>v.group===g).length;
+    $("groups").innerHTML = ["All",...GROUPS,"Review"].filter(g=>g!=="Review"||n("Review")).map(g=>`<button class="gchip${g===S.group?" on":""}${g==="Review"?" rev":""}" data-g="${g}" aria-pressed="${g===S.group}">${g==="Review"?"Needs review":g}<span>${n(g)}</span></button>`).join("");
+  }
+  function renderList(){
+    const list = filtered(); renderFilters();
+    $("count").textContent = S.ready ? (S.q||S.group!=="All" ? `${list.length} of ${S.venues.length} venues` : `${S.venues.length} venue${S.venues.length===1?"":"s"}`) : (S.db ? "Loading venues…" : "Venue data unavailable");
+    $("list").innerHTML = list.map(v => `<li><button class="venue-item${v.id===S.sel?" on":""}${v.status==="Obsolete"?" obs":""}" data-id="${esc(v.id)}">
+      <span class="n">${needsReview(v)?'<i class="dot" title="Needs review"></i>':""}${esc(v.name||"Untitled venue")}</span><span class="c">${v.status==="Obsolete"?"Obsolete":esc(v.code)}</span>
+      <span class="a">${esc([v.city,v.state].filter(Boolean).join(", ")||v.address||"No address yet")}</span></button></li>`).join("")
+      || (S.ready ? `<li style="padding:14px;color:var(--muted);font-size:14px">${S.q?"No venues match that search.":"No venues yet."}</li>` : "");
+    $("addVenue").hidden = !S.canWrite;
+  }
+
+  function cell(kind,col,row,i){
+    const val = row[col.f] ?? "";
+    if (S.editing){
+      if (col.opts) return `<td><select id="${kind}-${i}-${col.f}" data-kind="${kind}" data-i="${i}" data-f="${col.f}">
+        <option value=""></option>${col.opts.map(o=>`<option${o===val?" selected":""}>${esc(o)}</option>`).join("")}${val&&!col.opts.includes(val)?`<option selected>${esc(val)}</option>`:""}</select></td>`;
+      return `<td><input id="${kind}-${i}-${col.f}" class="${col.mono?"mono":""}" value="${esc(val)}" data-kind="${kind}" data-i="${i}" data-f="${col.f}" aria-label="${esc(col.l)}"></td>`;
+    }
+    if (col.chip && val) return `<td><span class="chip ${esc(val)}">${esc(val)}</span></td>`;
+    if (col.hosts && val){ const h=hostsFor(val); return `<td><span class="mono">${esc(val)}</span>${h?`<div class="hosts">${h}</div>`:""}</td>`; }
+    return `<td class="${col.mono?"mono":""}">${esc(val)||'<span style="color:var(--muted)">—</span>'}</td>`;
+  }
+  function tablePanel(kind, v){
+    const cols = COLS[kind], rows = v[kind];
+    const head = cols.map(c=>`<th>${c.l}</th>`).join("") + (S.editing?"<th></th>":"");
+    const body = rows.length ? rows.map((r,i)=>`<tr>${cols.map(c=>cell(kind,c,r,i)).join("")}${S.editing?`<td class="rm"><button class="btn ghost" data-rm="${kind}" data-i="${i}" aria-label="Remove row">Remove</button></td>`:""}</tr>`).join("")
+      : `<tr class="empty-row"><td colspan="${cols.length+(S.editing?1:0)}">Nothing recorded yet${S.canWrite&&!S.editing?" — choose Edit venue to add entries":""}.</td></tr>`;
+    return `<p class="panel-intro">${INTRO[kind]}</p><div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>
+      ${S.editing?`<button class="btn add-row" data-add="${kind}">+ Add row</button>`:""}`;
+  }
+  function diagramPanel(v){
+    const d = v.diagram; let view;
+    if (d.url && d.kind==="image") view = `<div class="diagram-frame"><img src="${esc(d.url)}" alt="Site diagram for ${esc(v.name)}"></div>`;
+    else if (d.url) view = `<div class="diagram-empty">Diagram file attached. <a href="${esc(d.url)}" target="_blank" rel="noopener" style="color:var(--accent)">Open diagram</a></div>`;
+    else view = `<div class="diagram-empty">No site diagram uploaded yet.${S.editing?"":" Editors can attach a PNG, JPG, SVG or PDF."}</div>`;
+    const up = S.editing ? (S.assets
+      ? `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><label class="btn" for="diagFile">Upload diagram…</label>
+         <input type="file" id="diagFile" accept="image/png,image/jpeg,image/svg+xml,image/webp,application/pdf" hidden>
+         ${d.url?`<button class="btn ghost" id="diagClear">Remove diagram</button>`:""}<span class="ro-note" id="diagStatus"></span></div>`
+      : `<p class="ro-note">Uploading diagrams requires Editor access to this page.</p>`) : "";
+    const notes = S.editing
+      ? `<div class="field"><label class="label" for="diagNotes">Diagram notes</label><textarea id="diagNotes" data-path="diagram.notes">${esc(d.notes)}</textarea></div>`
+      : (d.notes?`<div><div class="label">Notes</div><div class="diagram-notes">${esc(d.notes)}</div></div>`:"");
+    return `<div class="diagram">${view}${up}${notes}</div>`;
+  }
+
+  function headView(v){
+    const c = v.contact; const line2 = [v.city, [v.state,v.zip].filter(Boolean).join(" "), v.country&&v.country!=="USA"?v.country:""].filter(Boolean).join(", ");
+    const kv = (k,val) => val ? `<div class="kv"><span class="label">${k}</span><span class="v">${esc(val)}</span><button class="copy" data-copy="${esc(val)}">Copy</button></div>` : "";
+    const who = v.updatedBy ? (S.names[v.updatedBy] || "a teammate") : "";
+    const when = v.updatedAt ? new Date(v.updatedAt).toLocaleString([], {dateStyle:"medium",timeStyle:"short"}) : "";
+    return `<div class="rec-head"><div>
+        <div class="title-row"><h2>${esc(v.name||"Untitled venue")}</h2>${v.code?`<span class="code-tag">${esc(v.code)}</span>`:""}${v.status==="Obsolete"?`<span class="status-chip">Obsolete</span>`:""}</div>
+        ${v.description||v.client?`<div class="desc">${esc([v.description, v.client&&v.client!==v.description?v.client:"", v.group!=="Legends"?v.group:""].filter(Boolean).join(" · "))}</div>`:""}
+        <div class="addr">${esc(v.address)||'<span class="muted">No street address</span>'}${line2?`<br>${esc(line2)}`:""}</div>
+        ${when?`<div class="meta">Last updated ${esc(when)}${who?` by ${esc(who)}`:""}</div>`:""}
+      </div>
+      <div class="contact"><div class="label">Main contact</div>
+        ${c.name?`<div class="who">${esc(c.name)}</div>${c.title||c.employer?`<div class="role">${esc([c.title,c.employer].filter(Boolean).join(" · "))}</div>`:""}`:`<div class="role" style="margin:0">No contact recorded</div>`}
+        ${kv("Phone",c.phone)}${kv("Email",c.email)}
+        ${v.venueTech&&v.venueTech!==c.name?`<div class="kv"><span class="label">Tech</span><span class="v">${esc(v.venueTech)}</span><span></span></div>`:""}
+      </div></div>`;
+  }
+  function notesView(v){
+    if (!v.notes) return "";
+    const rev = needsReview(v);
+    return `<div class="notes-wrap"><div class="notes-box${rev?" review":""}"><span class="label">${rev?"Notes · needs review":"Notes"}</span>${esc(v.notes)}</div></div>`;
+  }
+  function headEdit(v){
+    const f = (path,label,val,wide,type="text") => `<div class="field${wide?" wide":""}"><label class="label" for="f-${path}">${label}</label><input id="f-${path}" type="${type}" data-path="${path}" value="${esc(val)}"></div>`;
+    const sel = (path,label,val,opts) => `<div class="field"><label class="label" for="f-${path}">${label}</label><select id="f-${path}" data-path="${path}">${opts.map(o=>`<option${o===val?" selected":""}>${esc(o)}</option>`).join("")}</select></div>`;
+    return `<div class="rec-head"><div class="form-section"><div class="label">Venue</div><div class="form-grid">
+        ${f("name","Venue name",v.name)}${f("code","Site code / short name",v.code)}
+        ${sel("group","Portfolio",v.group,GROUPS)}${sel("status","Status",v.status,["Active","Obsolete"])}
+        ${f("description","Description",v.description,1)}${f("client","Client / tenant",v.client,1)}
+        ${f("address","Street address",v.address,1)}
+        ${f("city","City",v.city)}${f("state","State / province",v.state)}${f("zip","ZIP / postal code",v.zip)}${f("country","Country",v.country)}</div></div>
+      <div class="form-section"><div class="label">Main contact</div><div class="form-grid">
+        ${f("contact.name","Name",v.contact.name)}${f("contact.title","Title",v.contact.title)}
+        ${f("contact.phone","Phone",v.contact.phone,0,"tel")}${f("contact.email","Email",v.contact.email,0,"email")}
+        ${f("contact.employer","Employer",v.contact.employer)}${f("venueTech","Venue tech",v.venueTech)}
+        <div class="field wide"><label class="label" for="f-notes">Notes</label><textarea id="f-notes" data-path="notes">${esc(v.notes)}</textarea></div></div></div></div>`;
+  }
+
+  function renderMain(){
+    const m = $("main");
+    if (!S.db){
+      m.innerHTML = `<div class="blank"><h2>Venue data isn't available here</h2><p>Open this page signed in to claude.ai to view and edit venue records.</p></div>`; return;
+    }
+    const v = S.editing ? S.draft : S.byId.get(S.sel);
+    if (!v){
+      m.innerHTML = S.ready && !S.venues.length
+        ? `<div class="blank"><h2>No venues yet</h2><p>Each venue gets its own record with contact details, network equipment, circuits, IP addressing and a site diagram. ${S.canWrite?"Add the first venue to get started.":"Ask an editor to add venues."}</p>${S.canWrite?`<button class="btn primary" id="addVenue2">+ Add venue</button>`:""}</div>`
+        : `<div class="blank"><h2>Select a venue</h2><p>Choose a venue from the list to see its details.</p></div>`;
+      return;
+    }
+    const counts = {equipment:v.equipment.length, circuits:v.circuits.length, ip:v.ip.length, diagram:v.diagram.url?1:0};
+    const actions = S.editing
+      ? `<span class="ro-note">${S.isNew?"New venue — not saved yet":"Editing"}</span><span class="spacer"></span>
+         ${!S.isNew?`<button class="btn danger${S.delArmed?" armed":""}" id="del">${S.delArmed?"Confirm delete":"Delete venue"}</button>`:""}
+         <button class="btn" id="cancel">Cancel</button><button class="btn primary" id="save">Save venue</button>`
+      : `<span class="spacer"></span>${S.canWrite?`<button class="btn" id="edit">Edit venue</button>`:`<span class="ro-note">View only</span>`}`;
+    const body = S.tab==="diagram" ? diagramPanel(v) : tablePanel(S.tab, v);
+    m.innerHTML = `<section class="record">${S.editing?headEdit(v):headView(v)+notesView(v)}<div class="actions">${actions}</div>
+      <div class="tabs" role="tablist">${TABS.map(t=>`<button class="tab${t.id===S.tab?" on":""}" role="tab" aria-selected="${t.id===S.tab}" data-tab="${t.id}">${t.label}${t.id!=="diagram"?`<span class="badge">${counts[t.id]}</span>`:""}</button>`).join("")}</div>
+      <div class="panel" role="tabpanel">${body}</div></section>`;
+  }
+  function render(){ renderList(); renderMain(); }
+
+  async function resolveNames(){
+    if (!S.user || !S.user.profiles) return;
+    const ids = [...new Set(S.venues.map(v=>v.updatedBy).filter(Boolean))]; if(!ids.length) return;
+    try { const ps = await S.user.profiles(ids); let changed=false;
+      for (const id of ids){ const n = ps?.[id]?.name || ""; if (n && S.names[id]!==n){ S.names[id]=n; changed=true; } }
+      if (changed && !S.editing) renderMain();
+    } catch(e){}
+  }
+
+  // ---------- actions ----------
+  function select(id){ if (S.editing) return; S.sel=id; S.delArmed=false; try{ history.replaceState(null,"","#"+id);}catch(e){} render(); }
+  function startEdit(){ const v=S.byId.get(S.sel); if(!v) return; S.draft=clone(v); delete S.draft.id; S.editing=true; S.isNew=false; S.delArmed=false; render(); }
+  function startNew(){ if(!S.db) return; const ref=S.db.collection("venues").doc(); S.sel=ref.id; S.draft=blankVenue(); S.editing=true; S.isNew=true; S.tab="equipment"; render(); setTimeout(()=>$("f-name")?.focus(),0); }
+  function cancel(){ S.editing=false; S.draft=null; if(S.isNew){ S.sel = S.venues[0]?.id || null; } S.isNew=false; S.delArmed=false; render(); }
+  async function save(){
+    const d = S.draft; if (!d.name.trim()){ toast("Give the venue a name before saving."); $("f-name")?.focus(); return; }
+    const btn=$("save"); btn.disabled=true; btn.textContent="Saving…";
+    const clean = k => d[k].filter(r => Object.values(r).some(x=>String(x||"").trim()));
+    const body = {...d, equipment:clean("equipment"), circuits:clean("circuits"), ip:clean("ip"), updatedAt:new Date().toISOString()};
+    try { const uid = S.user?.id ? await S.user.id() : null; if (uid) body.updatedBy = uid; } catch(e){}
+    try {
+      await S.db.doc("venues/"+S.sel).set(body);
+      S.editing=false; S.draft=null; S.isNew=false; toast("Venue saved"); try{history.replaceState(null,"","#"+S.sel);}catch(e){} render();
+    } catch(e){
+      btn.disabled=false; btn.textContent="Save venue";
+      toast(e?.code==="invalid_argument" ? "You don't have permission to edit venues on this page." : e?.code==="quota_exceeded" ? "Storage is full. Remove unused venues and try again." : "Couldn't save. Check your connection and try again.");
+    }
+  }
+  async function del(){
+    if (!S.delArmed){ S.delArmed=true; renderMain(); return; }
+    try { await S.db.doc("venues/"+S.sel).delete(); S.editing=false; S.draft=null; S.delArmed=false; S.sel=null; toast("Venue deleted"); render(); }
+    catch(e){ toast("Couldn't delete the venue. Try again."); }
+  }
+  function setPath(obj,path,val){ const p=path.split("."); let o=obj; while(p.length>1) o=o[p.shift()]; o[p[0]]=val; }
+
+  async function uploadDiagram(file){
+    const st=$("diagStatus"); if(st) st.textContent="Uploading…";
+    try { const r = await S.assets.upload(file);
+      S.draft.diagram.assetId=r.id; S.draft.diagram.url=r.url; S.draft.diagram.kind = (r.contentType||file.type).startsWith("image/")?"image":"file";
+      renderMain(); toast("Diagram attached. Save the venue to keep it.");
+    } catch(e){ if(st) st.textContent = e?.message ? "Upload failed: "+e.message : "Upload failed. Use a PNG, JPG, SVG or PDF under 20 MB."; }
+  }
+
+  function copy(text){
+    const done=()=>toast("Copied");
+    try { navigator.clipboard.writeText(text).then(done, ()=>fallback()); } catch(e){ fallback(); }
+    function fallback(){ const ta=document.createElement("textarea"); ta.value=text; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy"); done();}catch(e){toast("Select the text to copy it");} ta.remove(); }
+  }
+
+  // ---------- events ----------
+  $("q").addEventListener("input", e => { S.q=e.target.value; renderList(); });
+  $("addVenue").addEventListener("click", startNew);
+  $("groups").addEventListener("click", e => { const b=e.target.closest(".gchip"); if(!b) return; S.group=b.dataset.g; renderList(); });
+  $("list").addEventListener("click", e => { const b=e.target.closest(".venue-item"); if(b){ if(S.editing){ toast("Save or cancel your edits first."); return; } select(b.dataset.id); } });
+  $("main").addEventListener("click", e => {
+    const t=e.target.closest("button,[data-tab]"); if(!t) return;
+    if (t.dataset.tab){ S.tab=t.dataset.tab; try{localStorage.setItem("vna.tab",S.tab);}catch(e){} renderMain(); return; }
+    if (t.dataset.copy!==undefined){ copy(t.dataset.copy); return; }
+    if (t.dataset.add){ const row={}; COLS[t.dataset.add].forEach(c=>row[c.f]= c.f==="status"?"Active": c.f==="role"?"Primary":""); S.draft[t.dataset.add].push(row); renderMain();
+      const i=S.draft[t.dataset.add].length-1; document.getElementById(`${t.dataset.add}-${i}-${COLS[t.dataset.add][0].f}`)?.focus(); return; }
+    if (t.dataset.rm){ S.draft[t.dataset.rm].splice(+t.dataset.i,1); renderMain(); return; }
+    switch(t.id){
+      case "edit": startEdit(); break; case "cancel": cancel(); break; case "save": save(); break; case "del": del(); break;
+      case "addVenue2": startNew(); break;
+      case "diagClear": S.draft.diagram={...S.draft.diagram,assetId:"",url:"",kind:""}; renderMain(); break;
+    }
+    if (t.id!=="del" && S.delArmed){ S.delArmed=false; renderMain(); }
+  });
+  $("main").addEventListener("input", e => {
+    const el=e.target; if(!S.editing) return;
+    if (el.dataset.kind){ S.draft[el.dataset.kind][+el.dataset.i][el.dataset.f]=el.value; }
+    else if (el.dataset.path){ setPath(S.draft, el.dataset.path, el.value); }
+  });
+  $("main").addEventListener("change", e => {
+    if (e.target.id==="diagFile" && e.target.files?.[0]) uploadDiagram(e.target.files[0]);
+    else if (e.target.dataset.kind && S.editing){ S.draft[e.target.dataset.kind][+e.target.dataset.i][e.target.dataset.f]=e.target.value; }
+  });
+
+  // ---------- boot ----------
+  render();
+  (async () => {
+    const use = window.claude?.use; if (!use){ S.ready=true; render(); return; }
+    const [db, user, assets] = await Promise.all([use("db"), use("user"), use("assets")]);
+    S.db=db; S.user=user; S.assets=assets;
+    if (!db){ S.ready=true; render(); return; }
+    try { const w = user?.can ? await user.can("data.write") : null; S.canWrite = w===null || w===undefined ? true : !!w; } catch(e){ S.canWrite=true; }
+    render();
+    db.collection("venues").orderBy("name").onSnapshot(snap => {
+      S.venues = snap.docs.map(d => ({id:d.id, ...norm(d.data()||{})}));
+      S.byId = new Map(S.venues.map(v=>[v.id,v]));
+      if (!S.ready){
+        S.ready=true; const h=(location.hash||"").slice(1);
+        S.sel = S.byId.has(h) ? h : (S.venues[0]?.id || null);
+      } else if (!S.editing && S.sel && !S.byId.has(S.sel)) S.sel = S.venues[0]?.id || null;
+      if (S.editing) renderList(); else render();
+      resolveNames();
+    }, err => { S.ready=true; $("count").textContent="Couldn't load venues — reload the page."; });
+  })();
+})();
+</script>
