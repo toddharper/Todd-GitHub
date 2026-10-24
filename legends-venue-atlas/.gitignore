@@ -1,0 +1,8 @@
+# Venue data must never be committed: it lives in Supabase behind sign-in.
+*seed*.sql
+*.csv
+*.xlsx
+data/
+venue-atlas-*.json
+.env
+.DS_Store
