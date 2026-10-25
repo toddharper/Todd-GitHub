@@ -5,6 +5,6 @@
 // Your data stays protected by sign-in and the access rules in supabase/schema.sql.
 // Never put the secret / service_role key in this file.
 window.ATLAS_CONFIG = {
-  supabaseUrl: "https://YOUR-PROJECT-REF.supabase.co",
-  supabaseKey: "YOUR-PUBLISHABLE-KEY",
+  supabaseUrl: "https://gmwpbjzluotebwessrks.supabase.co/rest/v1/",
+  supabaseKey: "sb_publishable_8KpdjF51nfc9RYTVdXp_ZA_obAL0shU",
 };
